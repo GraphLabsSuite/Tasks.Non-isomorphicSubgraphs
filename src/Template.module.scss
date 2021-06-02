@@ -1,0 +1,67 @@
+.App   {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.MainRow   {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 80%;
+}
+
+.BorderedDiv {
+  box-shadow:2px 2px 11px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow:2px 2px 11px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  background: #fffaf0;
+}
+
+.GraphCell {
+  @extend .BorderedDiv;
+  position: fixed;
+  left: 15%;
+  top: 1%;
+  width: 62%;
+  height: 78%;
+}
+
+.ToolCell   {
+  @extend .BorderedDiv;
+  position: fixed;
+  left: 1%;
+  top: 1%;
+  width: 12%;
+  height: 78%;
+}
+
+.TaskCell  {
+  @extend .BorderedDiv;
+  position: fixed;
+  left: 79%;
+  top: 1%;
+  width: 20%;
+  height: 78%;
+}
+
+.LeftBottom   {
+  @extend .BorderedDiv;
+  position: fixed;
+  left: 1%;
+  top: 80%;
+  width: 12%;
+  height: 19%;
+}
+
+.LowRow   {
+  @extend .BorderedDiv;
+  position: fixed;
+  left: 15%;
+  top: 80%;
+  width: 84%;
+  height: 19%;
+}

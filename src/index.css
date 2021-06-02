@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.TaskCell___13bM1{
+  overflow: auto;
+}
+
+.ToolCell___3aOd8{
+  overflow: auto;
+}
+
+.raph-Model-1{
+  width: 100%;
+  height: 100%;
+}
+.raph-Model-2{
+  width: 100%;
+  height: 100%;
+}
+
+.T_s{
+  color: white;
+}
+
+#iframe{
+  position: absolute;
+}
+.help_for_casuals{
+  position: inherit;
+  left: 0%; top: 0%;
+}
+.help_for_casuals:hover::after{
+  content: attr(data-title); /* Выводим текст */
+  position: absolute; /* Абсолютное позиционирование */
+  left: 0%; top: 0%; /* Положение подсказки */
+  z-index: 1; /* Отображаем подсказку поверх других элементов */
+  background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
+  font-family: Arial, sans-serif; /* Гарнитура шрифта */
+  /*font-size: 10px; /* Размер текста подсказки */
+  /*padding: 10%; /* Поля */
+  border: 1px solid #333; /* Параметры рамки */
+  border-radius: 5px;
+}
