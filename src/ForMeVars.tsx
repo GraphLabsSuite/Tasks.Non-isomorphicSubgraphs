@@ -5,13 +5,17 @@ import {graphModel1} from "./ForMyGraphModel";
 var My_Graphs:string[] = [];
 let message_0 = '';
 let num_0 = 0;
-let mark_0 = 0;
+let mark_0 = 0; // оценка
+let mark_1 = 0; // число неправильно найденных подграфов
 let T_s = 45*60;
+let need_render = false;
 
 function My_Graphs_changing (new_My_Graphs: string[]) {My_Graphs = new_My_Graphs;}
 function message_0_changing (new_message: string) {message_0 = new_message;}
 function num_0_changing (new_num: number) {num_0 = new_num;}
 function mark_0_changing (new_mark: number) {mark_0 = new_mark;}
+function mark_1_changing (new_mark: number) {mark_1 = new_mark;}
+function need_render_changing (new_need_render: boolean) {need_render = new_need_render;}
 function T_s_changing (new_T_s: number) {T_s = new_T_s;}
 function T_s_shawing () {
     let T_min, T_sec;
@@ -28,4 +32,4 @@ function T_s_shawing () {
     }
 }
 
-export { num_0, message_0, num_0_changing, message_0_changing, mark_0, mark_0_changing, T_s, T_s_changing, T_s_shawing, My_Graphs, My_Graphs_changing };
+export { num_0, message_0, num_0_changing, message_0_changing, mark_0, mark_0_changing, T_s, T_s_changing, T_s_shawing, My_Graphs, My_Graphs_changing, mark_1, mark_1_changing, need_render_changing, need_render };

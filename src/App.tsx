@@ -20,12 +20,20 @@ import {WritableAdapter} from "graphlabs.core.visualizer";
 import './App.css';
 
 import { /*Component,*/ SFC} from 'react';
-import { init1, graphModel1, initres, /*graphModelres,*/ init, graphModel } from './ForMyGraphModel';
-import {message_0, message_0_changing, num_0, num_0_changing, mark_0, mark_0_changing, T_s, T_s_changing, T_s_shawing } from './ForMeVars';
+import { init1, graphModel1, initres, /*graphModelres,*/ init, graphModel, graphModelres } from './ForMyGraphModel';
+import {message_0, message_0_changing, num_0, num_0_changing, mark_0, mark_0_changing, T_s, T_s_changing, T_s_shawing, need_render, need_render_changing } from './ForMeVars';
 import { CheckingAnswer, LastCheckingAnswer } from "./CheckAnswer";
 import { GraphsInit } from "./GraphsInit"
 import ReactDOM from "react-dom";
 import {log} from "util";
+import * as d3 from "d3";
+import { MyVisualizer } from "./MyVisualizer";
+
+/*
+Мой личный баг: 1) убери рендеринг графа через GraphVisualizer из области задания 2) Профит, т.е. долбаные изначальные кнопки возвращаются. Скорее всего дело в том,
+что рендеринг графа в области задания как-то влияет на моё переопределение функции, которая меняет область кнопок.
+Поэтому я использую костыль: ренжерю пустой граф
+ */
 
 class App extends Template {
 
@@ -40,9 +48,38 @@ class App extends Template {
 
         let timerId = setInterval(()=>{
             T_s_changing(T_s-1);
+            //if(need_render){ // Это супер плохой костыль. Всё из-за того, что при обновлении с помощью this.forceUpdate() в кнопке добавлении вершины мой граф
+                // полностью пропадает, без поняти почему. т.е. все его элементы просто исчезают. В ту же секунду отрендерить его зано во пока не получилось.
+                // Поэтому костыль заключается в том, что я считаю своё собственное время и каждую секунду смотрю, что мне нужно поменять. Знаю, componentDidMount
+                // и ему подобные мне в помощь, но пока не знаю что из этого использовать или как это использовать.
+            //
+            // Исправил в ту же минуту, но инстинктивно. Не знаю насколько я правильно добавил его в componentDidUpdate(), поэтому, стоит потом разобраться по подробнее.
+
+            //MyVisualizer(graphModel1,"graph-Model-1");
+                //need_render_changing(false);
+            //}
             ReactDOM.render(T_s_shawing(), document.getElementById("T_s"));
         }, 1000);
         window.setTimeout(()=>{clearInterval(timerId);LastCheckingAnswer();},1000*45*60);
+    }
+
+    componentDidMount() {
+        let graph = GraphGenerator.generate(0);
+        graph.addVertex(new Vertex('0'));
+        graph.addVertex(new Vertex('1'));
+        graph.addVertex(new Vertex('2'));
+        graph.addVertex(new Vertex('3'));
+        graph.addVertex(new Vertex('4'));
+        MyVisualizer(graphModel1,"graph-Model-1");
+        //this.render();
+        //this.forceUpdate();
+    }
+
+    componentDidUpdate() {
+        if(need_render) {
+            MyVisualizer(graphModel1, "graph-Model-1");
+            need_render_changing(false);
+        }
     }
 
     protected getTaskToolbar() {
@@ -67,8 +104,8 @@ class App extends Template {
                         const start = new Date().getTime();
                         //adapter.addVertex();
                         graphModel.addVertex(new Vertex(`${graphModel.vertices.length}`));
-                        this.render();
                         this.forceUpdate();
+                        need_render_changing(true);
                         const end = new Date().getTime();
                         T_s_changing(T_s - Math.round((end-start)/1000));
                     }}>Добавить<br/>вершину</button>
@@ -99,9 +136,18 @@ class App extends Template {
                             init(graph);
                             this.forceUpdate();
                         }
+                        need_render_changing(true);
                         const end = new Date().getTime();
                         T_s_changing(T_s - Math.round((end-start)/1000));
                     }}>Добавить подграф<br/>в результат</button>
+                    <button style={{marginTop:'4px', border: '1px double black', borderRadius:'10px', background: 'white', width:'130px', height:'46px', textAlign: 'center', font:'13pt serif'}} onClick={()=>{
+                        const start = new Date().getTime();
+
+                        MyVisualizer(graphModel1,"graph-Model-1");
+
+                        const end = new Date().getTime();
+                        T_s_changing(T_s - Math.round((end-start)/1000));
+                    }}>Кнопка<br/></button>
                     <T_s_shawing/>
                 </div>);
         };
@@ -130,6 +176,26 @@ class App extends Template {
                     edgeNaming={false}
                     incidentEdges={false}
                 />
+                <div className={"list_of_sub_graps"}>
+                    <svg className={"sdq1"}>
+                    </svg>
+                    <svg className={"sdq2"}>
+                    </svg>
+                    <svg className={"sdq3"}>
+                    </svg>
+                    <svg className={"sdq4"}>
+                    </svg>
+                    <svg className={"sdq5"}>
+                    </svg>
+                    <svg className={"sdq6"}>
+                    </svg>
+                    <svg className={"sdq7"}>
+                    </svg>
+                    <svg className={"sdq8"}>
+                    </svg>
+                    <svg className={"sdq9"}>
+                    </svg>
+                </div>
             </div>
         //return () =>
         //    <GraphVisualizer
@@ -150,19 +216,23 @@ class App extends Template {
                     <img src={"http://gl-backend.svtz.ru:5000/odata/downloadImage(name='Help.png')"}></img>
                 </p>
                 {message_0}
-                <p className={"raph-Model-1"}>
-                    <GraphVisualizer
-                        graph={graphModel1}
-                        adapterType={'readable'}
-                        namedEdges={false}
-                        vertexNaming={false}
-                        withoutDragging={true}
-                        edgeNaming={false}
-                        incidentEdges={false}
-                    />
-                </p>
+                <svg className={"graph-Model-1"}>
+                </svg>
+                <GraphVisualizer
+                    graph={graphModelres}
+                    adapterType={'readable'}
+                    namedEdges={false}
+                    vertexNaming={false}
+                    withoutDragging={true}
+                    edgeNaming={false}
+                    incidentEdges={false}
+                />
             </div>;
     }
 }
+
+/*
+
+ */
 
 export default App;

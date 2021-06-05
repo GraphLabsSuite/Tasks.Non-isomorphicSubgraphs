@@ -29,6 +29,12 @@ code {
   height: 100%;
 }
 
+.list_of_sub_graps{
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+}
+
 .T_s{
   color: white;
 }
